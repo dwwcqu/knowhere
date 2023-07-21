@@ -2,97 +2,19 @@
     <img src="static/knowhere-logo.png" alt="Knowhere Logo"/>
 </p>
 
-This document will help you to build the Knowhere repository from source code and to run unit tests. Please [file an issue](https://github.com/milvus-io/knowhere/issues/new) if there's a problem.
+# *knowhere* ROCm GPU backend library
+本库将 [*milvus-io/knowhere*](https://github.com/milvus-io/knowhere) 从 *CUDA GPU* 后端移植到 *ROCm GPU* 后端，该库可以在 *ROCm* GPU下进行加速计算。目前，只支持 *faiss* 库，而不支持 *raft*。
 
-## Introduction
+关于 *ROCm GPU* 后端支持的 *knowhere* 库的编译和安装，请参考 [Kownhere README](./KNOWHERE_README.md)。
 
-Knowhere is written in C++. It is an independent project that act as Milvus's internal core.
+## 移植汇总
+*thirdparty/faiss* 库移植适配 *ROCm-GPU* 的主要内容汇总如下：
 
-## Building Knowhere Within Milvus
++ *k-select* 算法中，*warpSize* 大小的线程束内的双调排序部分实现，从 CUDA-backend 的 32 warp 大小调整为 ROCm-backend 的 64 warp 大小；且在进行合并时，需要进行大小为 32 长度的合并操作(在 CUDA-backend 是 16 大小的合并操作)；
++ 对于 *k-select* 算法中，一个 warp 中会有一个 warp 队列，当 `k<=32` 时，CUDA-backend 会设置 32 的队列大小，ROCm-backend 需要设置为 64 的队列大小。这里有一个例外是 WarpSelect 实现，其 `N_WARP_Q` 大小 32 是不影响的，而对于 BlockSelect, IVFInterleavedScan, IVFInterleavedScan2 等都需要将 `N_WARP_Q` 大小设置为 64；
++ 在关于 `IVFPQ` 实现部分，CUDA-backend 需要用一个 warpSize=32 去编码 32 个向量，对应到 ROCm-backend 下，就需要用一个 warpSize=64 去编码 64 个向量；
++ 最后一部分，就是 *Warp-coalesced parallel reading and writing of packed bits*，这里需要将 CUDA-backend 的 32 个 warp 线程去读写 4-bits, 5-bits, 6-bits 的操作，改为 ROCm-backend 下 64 个 warp 线程去读写 4-bits, 5-bits, 6-bits 的操作；
++ 更多具体的移植过程，可以参考 git 的 commit 记录对边，进行具体了解；
 
-If you wish to only use Knowhere within Milvus without changing any of the Knowhere source code, we suggest that you move to the [Milvus main project](https://github.com/milvus-io/milvus) and build Milvus directly, where Knowhere is then built implicitly during Milvus build.
-
-## System Requirements
-
-All Linux distributions are available for Knowhere development. However, a majority of our contributor worked with Ubuntu or CentOS systems, with a small portion of Mac (both x86_64 and Apple Silicon) contributors. If you would like Knowhere to build and run on other distributions, you are more than welcome to file an issue and contribute!
-
-Here's a list of verified OS types where Knowhere can successfully build and run:
-
-- Ubuntu 20.04 x86_64
-- Ubuntu 20.04 Aarch64
-- MacOS (x86_64)
-- MacOS (Apple Silicon)
-
-## Building Knowhere From Source Code
-
-#### Install Dependencies
-
-```bash
-$ sudo apt install build-essential libopenblas-dev ninja-build libaio-dev libboost-program-options-dev
-```
-
-#### Build From Source Code
-
-```bash
-#fetch submodule
-$ git submodule update --recursive --init
-
-$ mkdir build && cd build
-#DEBUG CPU
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DWITH_UT=ON -G Ninja
-#RELEASE CPU
-$ cmake .. -DCMAKE_BUILD_TYPE=Release -DWITH_UT=ON -G Ninja
-#DEBUG GPU
-$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_CUDA=ON -DWITH_UT=ON -G Ninja
-#RELEASE GPU
-$ cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_CUDA=ON -DWITH_UT=ON -G Ninja
-#ADD -DWITH_DISKANN=ON TO BUILD DISKANN INDEX
-$ cmake .. -DCMAKE_BUILD_TYPE=Release -DWITH_UT=ON -DWITH_DISKANN=ON -G Ninja
-#verbose compile
-$ninja -v
-```
-
-#### Running Unit Tests
-
-```bash
-# in build directories
-$ ./tests/ut/knowhere_tests
-```
-
-#### Clean up
-
-```bash
-$ git clean -fxd
-```
-
-## GEN PYTHON WHEEL
-
-install dependency:
-
-```
-sudo apt install swig python3-dev
-```
-
-after build knowhere:
-
-```bash
-cd python
-python3 setup.py bdist_wheel
-```
-
-install knowhere wheel:
-
-```bash
-pip3 install dist/knowhere-1.0.0-cp38-cp38-linux_x86_64.whl
-```
-
-clean
-
-```bash
-cd python
-rm -rf build
-rm -rf dist
-rm -rf knowhere.egg-info
-rm knowhere/knowhere_wrap.cpp
-rm knowhere/swigknowhere.py
-```
+*knowhere* 源码中和 *CUDA* 相关的代码：
++ `src/index/ivf_gpu` 目录下的 `ivf_gpu.cc` 需要将其 *CUDA* 接口转码为 *HIP* 接口；
