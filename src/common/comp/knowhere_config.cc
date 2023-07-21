@@ -17,7 +17,7 @@
 #include "faiss/utils/distances.h"
 #include "faiss/utils/utils.h"
 #include "knowhere/log.h"
-#ifdef USE_CUDA
+#ifdef USE_HIP
 #include "knowhere/gpu/gpu_res_mgr.h"
 #endif
 #include "simd/hook.h"
@@ -29,7 +29,7 @@ KnowhereConfig::ShowVersion() {
 #define XSTR(x) STR(x)
 #define STR(x) #x
 #ifdef KNOWHERE_VERSION
-#ifdef USE_CUDA
+#ifdef USE_HIP
     LOG_KNOWHERE_INFO_ << "Knowhere Version: " << XSTR(KNOWHERE_VERSION) << "-gpu";
 #else
     LOG_KNOWHERE_INFO_ << "Knowhere Version: " << XSTR(KNOWHERE_VERSION);
@@ -132,7 +132,7 @@ KnowhereConfig::SetAioContextPool(size_t num_ctx, size_t max_events) {
 
 void
 KnowhereConfig::InitGPUResource(int64_t gpu_id, int64_t res_num) {
-#ifdef USE_CUDA
+#ifdef USE_HIP
     LOG_KNOWHERE_INFO_ << "init GPU resource for gpu id " << gpu_id << ", resource num " << res_num;
     knowhere::GPUParams gpu_params(res_num);
     knowhere::GPUResMgr::GetInstance().InitDevice(gpu_id, gpu_params);
@@ -142,7 +142,7 @@ KnowhereConfig::InitGPUResource(int64_t gpu_id, int64_t res_num) {
 
 void
 KnowhereConfig::FreeGPUResource() {
-#ifdef USE_CUDA
+#ifdef USE_HIP
     LOG_KNOWHERE_INFO_ << "free GPU resource";
     knowhere::GPUResMgr::GetInstance().Free();
 #endif

@@ -91,8 +91,8 @@ class GPUResMgr {
                 auto gpu_res = new faiss::gpu::StandardGpuResources();
                 auto res = std::make_shared<Resource>(gpu_id_, gpu_res);
 
-                cudaStream_t s;
-                CUDA_VERIFY(cudaStreamCreate(&s));
+                hipStream_t s;
+                CUDA_VERIFY(hipStreamCreate(&s));
                 gpu_res->setDefaultStream(gpu_id_, s);
                 gpu_res->setTempMemory(gpu_params_.tmp_mem_sz_);
                 // need not set pinned memory by now
@@ -105,7 +105,7 @@ class GPUResMgr {
         }
     }
 
-    // Free GPU resource, avoid cudaGetDevice error when deallocate.
+    // Free GPU resource, avoid hipGetDevice error when deallocate.
     // This func should be invoked before main return
     void
     Free() {

@@ -17,7 +17,7 @@
 #include "knowhere/factory.h"
 #include "utils.h"
 
-#ifdef USE_CUDA
+#ifdef USE_HIP
 TEST_CASE("Test All GPU Index", "[search]") {
     using Catch::Approx;
 
