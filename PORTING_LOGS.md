@@ -896,14 +896,14 @@ The following tests FAILED:
 
 ## 2023/7/14
 
-<img src="..\..\weituinfo-documents\images\knowhere_ports\indexflat_search_results_cuda.png" style="zoom:150%;" />
+<img src="./static/indexflat_search_results_cuda.png" style="zoom:150%;" />
 
 <center>
     CUDA 下的 k-select 分别在CPU/GPU上的结果
 </center>
 
 
-<img src="..\..\weituinfo-documents\images\knowhere_ports\indexflat_search_results_hip.png" style="zoom:150%;" />
+<img src="./static/indexflat_search_results_hip.png" style="zoom:150%;" />
 
 <center>
     HIP 下的 k-select 分别在CPU/GPU上的结果

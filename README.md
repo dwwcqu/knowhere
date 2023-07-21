@@ -5,7 +5,7 @@
 # *knowhere* ROCm GPU backend library
 本库将 [*milvus-io/knowhere*](https://github.com/milvus-io/knowhere) 从 *CUDA GPU* 后端移植到 *ROCm GPU* 后端，该库可以在 *ROCm* GPU下进行加速计算。目前，只支持 *faiss* 库，而不支持 *raft*。
 
-关于 *ROCm GPU* 后端支持的 *knowhere* 库的编译和安装，请参考 [Kownhere README](./KNOWHERE_README.md)。
+关于 *ROCm GPU* 后端支持的 *knowhere* 库的编译和安装，请参考 [*Kownhere README*](./KNOWHERE_README.md)。
 
 ## 移植汇总
 *thirdparty/faiss* 库移植适配 *ROCm-GPU* 的主要内容汇总如下：
@@ -18,3 +18,5 @@
 
 *knowhere* 源码中和 *CUDA* 相关的代码：
 + `src/index/ivf_gpu` 目录下的 `ivf_gpu.cc` 需要将其 *CUDA* 接口转码为 *HIP* 接口；
+
+关于详细的移植记录请参考 [*Porting Logs*](./PORTING_LOGS.md)。
