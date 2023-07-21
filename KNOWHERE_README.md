@@ -42,10 +42,14 @@ $ mkdir build && cd build
 $ cmake .. -DCMAKE_BUILD_TYPE=Debug -DWITH_UT=ON -G Ninja
 #RELEASE CPU
 $ cmake .. -DCMAKE_BUILD_TYPE=Release -DWITH_UT=ON -G Ninja
-#DEBUG GPU
-$ CXX=/path/to/hipcc cmake .. -DCMAKE_BUILD_TYPE=Debug -DUSE_HIP=ON -DWITH_UT=ON -G Ninja
-#RELEASE GPU
-$ CXX=/path/to/hipcc cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_HIP=ON -DWITH_UT=ON -G Ninja
+#DEBUG ROCm GPU
+$ CXX=/path/to/hipcc CC=/path/to/hipcc cmake .. -DCMAKE_BUILD_TYPE=Debug -DAMDGPU_TARGETS="your arch" -DUSE_HIP=ON -DWITH_UT=ON -G Ninja
+or
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DAMDGPU_TARGETS="your arch" -DUSE_HIP=ON -DWITH_UT=ON -G Ninja
+#RELEASE ROCm GPU
+$ CXX=/path/to/hipcc CC=/path/to/hipcc cmake .. -DCMAKE_BUILD_TYPE=Release -DAMDGPU_TARGETS="your arch" -DUSE_HIP=ON -DWITH_UT=ON -G Ninja
+or
+$ cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DAMDGPU_TARGETS="your arch" -DUSE_HIP=ON -DWITH_UT=ON -G Ninja
 #ADD -DWITH_DISKANN=ON TO BUILD DISKANN INDEX
 $ cmake .. -DCMAKE_BUILD_TYPE=Release -DWITH_UT=ON -DWITH_DISKANN=ON -G Ninja
 #verbose compile

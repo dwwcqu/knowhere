@@ -57,9 +57,6 @@ if(USE_HIP)
   add_definitions(-DUSE_HIP)
   list(APPEND CMAKE_PREFIX_PATH "/opt/rocm/")
   set(AMDGPU_TARGETS "gfx906;gfx916" CACHE STRING "Choose the ROCm architectures of compiler to build")
-  set(CMAKE_CXX_COMPILER $ENV{CXX} CACHE STRING
-      "Choose the type of compiler to build: Default point to hipcc")
-  enable_language(HIP)
 endif()
 
 add_definitions(-DAUTO_INITIALIZE_EASYLOGGINGPP)
