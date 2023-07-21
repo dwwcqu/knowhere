@@ -48,7 +48,7 @@ set(FAISS_SRC
   IndexPQ.cpp
   IndexPQFastScan.cpp
   IndexPreTransform.cpp
-  IndexRHNSW.cpp
+  # IndexRHNSW.cpp
   IndexRefine.cpp
   IndexReplicas.cpp
   IndexSQHybrid.cpp

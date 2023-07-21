@@ -17,7 +17,7 @@ set(FAISS_GPU_SRC
   GpuIndexIVFFlat.cu
   GpuIndexIVFPQ.cu
   GpuIndexIVFScalarQuantizer.cu
-  GpuIndexIVFSQHybrid.cu
+  # GpuIndexIVFSQHybrid.cu
   GpuResources.cpp
   StandardGpuResources.cpp
   impl/BinaryDistance.cu
@@ -41,7 +41,7 @@ set(FAISS_GPU_SRC
   impl/RemapIndices.cpp
   impl/VectorResidual.cu
   impl/scan/IVFInterleaved1.cu
-  impl/scan/IVFInterleaved32.cu
+  # impl/scan/IVFInterleaved32.cu
   impl/scan/IVFInterleaved64.cu
   impl/scan/IVFInterleaved128.cu
   impl/scan/IVFInterleaved256.cu
@@ -55,7 +55,7 @@ set(FAISS_GPU_SRC
   utils/Timer.cpp
   utils/WarpSelectFloat.cu
   utils/blockselect/BlockSelectFloat1.cu
-  utils/blockselect/BlockSelectFloat32.cu
+  # utils/blockselect/BlockSelectFloat32.cu
   utils/blockselect/BlockSelectFloat64.cu
   utils/blockselect/BlockSelectFloat128.cu
   utils/blockselect/BlockSelectFloat256.cu
@@ -96,73 +96,73 @@ set(FAISS_GPU_HEADERS
   GpuIndicesOptions.h
   GpuResources.h
   StandardGpuResources.h
-  impl/BinaryDistance.cuh
-  impl/BinaryFlatIndex.cuh
-  impl/BroadcastSum.cuh
-  impl/Distance.cuh
-  impl/DistanceUtils.cuh
-  impl/FlatIndex.cuh
-  impl/GeneralDistance.cuh
-  impl/GpuScalarQuantizer.cuh
-  impl/IVFAppend.cuh
-  impl/IVFBase.cuh
-  impl/IVFFlat.cuh
-  impl/IVFFlatScan.cuh
-  impl/IVFInterleaved.cuh
-  impl/IVFPQ.cuh
-  impl/IVFUtils.cuh
+  impl/BinaryDistance.h
+  impl/BinaryFlatIndex.h
+  impl/BroadcastSum.h
+  impl/Distance.h
+  impl/DistanceUtils.h
+  impl/FlatIndex.h
+  impl/GeneralDistance.h
+  impl/GpuScalarQuantizer.h
+  impl/IVFAppend.h
+  impl/IVFBase.h
+  impl/IVFFlat.h
+  impl/IVFFlatScan.h
+  impl/IVFInterleaved.h
+  impl/IVFPQ.h
+  impl/IVFUtils.h
   impl/InterleavedCodes.h
-  impl/L2Norm.cuh
-  impl/L2Select.cuh
-  impl/PQCodeDistances-inl.cuh
-  impl/PQCodeDistances.cuh
-  impl/PQCodeLoad.cuh
-  impl/PQScanMultiPassNoPrecomputed-inl.cuh
-  impl/PQScanMultiPassNoPrecomputed.cuh
-  impl/PQScanMultiPassPrecomputed.cuh
+  impl/L2Norm.h
+  impl/L2Select.h
+  impl/PQCodeDistances-inl.h
+  impl/PQCodeDistances.h
+  impl/PQCodeLoad.h
+  impl/PQScanMultiPassNoPrecomputed-inl.h
+  impl/PQScanMultiPassNoPrecomputed.h
+  impl/PQScanMultiPassPrecomputed.h
   impl/RemapIndices.h
-  impl/VectorResidual.cuh
-  impl/scan/IVFInterleavedImpl.cuh
-  impl/IcmEncoder.cuh
-  utils/BlockSelectImpl.cuh
-  utils/BlockSelectKernel.cuh
-  utils/Comparators.cuh
-  utils/ConversionOperators.cuh
-  utils/CopyUtils.cuh
-  utils/DeviceDefs.cuh
-  utils/DeviceTensor-inl.cuh
-  utils/DeviceTensor.cuh
+  impl/VectorResidual.h
+  impl/scan/IVFInterleavedImpl.h
+  impl/IcmEncoder.h
+  utils/BlockSelectImpl.h
+  utils/BlockSelectKernel.h
+  utils/Comparators.h
+  utils/ConversionOperators.h
+  utils/CopyUtils.h
+  utils/DeviceDefs.h
+  utils/DeviceTensor-inl.h
+  utils/DeviceTensor.h
   utils/DeviceUtils.h
-  utils/DeviceVector.cuh
-  utils/Float16.cuh
-  utils/HostTensor-inl.cuh
-  utils/HostTensor.cuh
-  utils/Limits.cuh
-  utils/LoadStoreOperators.cuh
-  utils/MathOperators.cuh
-  utils/MatrixMult-inl.cuh
-  utils/MatrixMult.cuh
-  utils/MergeNetworkBlock.cuh
-  utils/MergeNetworkUtils.cuh
-  utils/MergeNetworkWarp.cuh
-  utils/NoTypeTensor.cuh
-  utils/Pair.cuh
-  utils/PtxUtils.cuh
-  utils/ReductionOperators.cuh
-  utils/Reductions.cuh
-  utils/Select.cuh
+  utils/DeviceVector.h
+  utils/Float16.h
+  utils/HostTensor-inl.h
+  utils/HostTensor.h
+  utils/Limits.h
+  utils/LoadStoreOperators.h
+  utils/MathOperators.h
+  utils/MatrixMult-inl.h
+  utils/MatrixMult.h
+  utils/MergeNetworkBlock.h
+  utils/MergeNetworkUtils.h
+  utils/MergeNetworkWarp.h
+  utils/NoTypeTensor.h
+  utils/Pair.h
+  utils/PtxUtils.h
+  utils/ReductionOperators.h
+  utils/Reductions.h
+  utils/Select.h
   utils/StackDeviceMemory.h
   utils/StaticUtils.h
-  utils/Tensor-inl.cuh
-  utils/Tensor.cuh
-  utils/ThrustAllocator.cuh
+  utils/Tensor-inl.h
+  utils/Tensor.h
+  utils/ThrustAllocator.h
   utils/Timer.h
-  utils/Transpose.cuh
-  utils/WarpPackedBits.cuh
-  utils/WarpSelectKernel.cuh
-  utils/WarpShuffles.cuh
-  utils/blockselect/BlockSelectImpl.cuh
-  utils/warpselect/WarpSelectImpl.cuh
+  utils/Transpose.h
+  utils/WarpPackedBits.h
+  utils/WarpSelectKernel.h
+  utils/WarpShuffles.h
+  utils/blockselect/BlockSelectImpl.h
+  utils/warpselect/WarpSelectImpl.h
 )
 
 # Export FAISS_GPU_HEADERS variable to parent scope.
@@ -178,8 +178,10 @@ foreach(header ${FAISS_GPU_HEADERS})
   )
 endforeach()
 
-find_package(CUDAToolkit REQUIRED)
-target_link_libraries(faiss PUBLIC CUDA::cudart CUDA::cublas)
-target_link_libraries(faiss_avx2 PUBLIC CUDA::cudart CUDA::cublas)
-target_compile_options(faiss PUBLIC $<$<COMPILE_LANGUAGE:CUDA>:-Xfatbin=-compress-all>)
-target_compile_options(faiss_avx2 PUBLIC $<$<COMPILE_LANGUAGE:CUDA>:-Xfatbin=-compress-all>)
+find_package(hip REQUIRED)
+find_package(rocthrust REQUIRED)
+find_package(hipblas REQUIRED)
+find_package(hiprand REQUIRED)
+find_package(rocrand REQUIRED)
+target_link_libraries(faiss PRIVATE hip::host hip::device roc::rocthrust roc::hipblas hip::hiprand roc::rocrand)
+target_link_libraries(faiss_avx2 PRIVATE hip::host hip::device roc::rocthrust roc::hipblas hip::hiprand roc::rocrand)

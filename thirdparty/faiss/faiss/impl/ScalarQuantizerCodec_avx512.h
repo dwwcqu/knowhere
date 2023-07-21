@@ -425,7 +425,7 @@ struct DCTemplate_avx512<Quantizer, Similarity, 16> : SQDistanceComputer {
                 codes + i * code_size, codes + j * code_size);
     }
 
-    float query_to_code(const uint8_t * code) const {
+    float query_to_code(const uint8_t * code) const override {
         return compute_distance(q, code);
     }
 };
@@ -514,7 +514,7 @@ struct DistanceComputerByte_avx512<Similarity, 16> : SQDistanceComputer {
                 codes + i * code_size, codes + j * code_size);
     }
 
-    float query_to_code(const uint8_t* code) const {
+    float query_to_code(const uint8_t* code) const override{
         return compute_code_distance(tmp.data(), code);
     }
 };
