@@ -8,21 +8,25 @@ knowhere_file_glob(GLOB FAISS_AVX512_SRCS
 
 list(REMOVE_ITEM FAISS_SRCS ${FAISS_AVX512_SRCS})
 
-if(USE_CUDA)
+if(USE_HIP)
   knowhere_file_glob(
     GLOB
     FAISS_GPU_SRCS
-    thirdparty/faiss/faiss/gpu/*.cu
     thirdparty/faiss/faiss/gpu/*.cpp
-    thirdparty/faiss/faiss/gpu/impl/*.cu
     thirdparty/faiss/faiss/gpu/impl/*.cpp
-    thirdparty/faiss/faiss/gpu/utils/*.cu
     thirdparty/faiss/faiss/gpu/utils/*.cpp
-    thirdparty/faiss/faiss/gpu/impl/scan/*.cu
-    thirdparty/faiss/faiss/gpu/utils/blockselect/*.cu
+    thirdparty/faiss/faiss/gpu/impl/scan/*.cpp
     thirdparty/faiss/faiss/gpu/utils/blockselect/*.cpp
-    thirdparty/faiss/faiss/gpu/utils/warpselect/*.cu)
+    thirdparty/faiss/faiss/gpu/utils/warpselect/*.cpp)
   list(APPEND FAISS_SRCS ${FAISS_GPU_SRCS})
+endif()
+
+if(USE_HIP)
+  find_package(hip REQUIRED)
+  find_package(rocthrust REQUIRED)
+  find_package(hipblas REQUIRED)
+  find_package(hiprand REQUIRED)
+  find_package(rocrand REQUIRED)
 endif()
 
 if(__X86_64)
@@ -80,10 +84,8 @@ if(__X86_64)
 
   add_library(faiss STATIC ${FAISS_SRCS})
 
-  if(USE_CUDA)
-    target_link_libraries(faiss PUBLIC CUDA::cudart CUDA::cublas)
-    target_compile_options(
-      faiss PUBLIC $<$<COMPILE_LANGUAGE:CUDA>:-Xfatbin=-compress-all>)
+  if(USE_HIP)
+    target_link_libraries(faiss PUBLIC hip::host hip::device roc::rocthrust roc::hipblas hip::hiprand roc::rocrand)
   endif()
 
   add_dependencies(faiss faiss_avx512 knowhere_utils)
@@ -112,10 +114,8 @@ if(__AARCH64)
   list(REMOVE_ITEM FAISS_SRCS ${FAISS_AVX_SRCS})
   add_library(faiss STATIC ${FAISS_SRCS})
 
-  if(USE_CUDA)
-    target_link_libraries(faiss PUBLIC CUDA::cudart CUDA::cublas)
-    target_compile_options(
-      faiss PUBLIC $<$<COMPILE_LANGUAGE:CUDA>:-Xfatbin=-compress-all>)
+  if(USE_HIP)
+    target_link_libraries(faiss PUBLIC hip::host hip::device roc::rocthrust roc::hipblas hip::hiprand roc::rocrand)
   endif()
 
   target_compile_options(
